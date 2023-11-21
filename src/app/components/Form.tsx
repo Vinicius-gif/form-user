@@ -3,10 +3,10 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod';
-import { date, z } from 'zod'
+import { z } from 'zod'
 
 const schema = z.object({
-  name: z.string().min(3).max(50),
+  name: z.string().min(3, { message: 'O campo deve conter 3 caracteres' }).max(50),
   document: z.string(),
   email: z.string().email('Email é inválido'),
   initialDate: z.string(),
@@ -21,7 +21,7 @@ const schema = z.object({
     })
   }
 
-  if ( new Date (fields.initialDate).getTime > new Date(fields.finalDate).getTime) {
+  if ( new Date (fields.initialDate).getTime() > new Date(fields.finalDate).getTime()) {
     ctx.addIssue({
       path: ['finalDate'],
       code: z.ZodIssueCode.invalid_date,
@@ -50,7 +50,7 @@ const Form = () => {
           <input 
             {...register('name')} 
             className='rounded-md px-3 py-1' 
-            placeholder='Name' 
+            placeholder='Name'
             />
           {errors.name && (
             <p className='text-red-500'>{errors.name.message}</p>
